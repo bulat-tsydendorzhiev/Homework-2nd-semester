@@ -89,14 +89,14 @@
 
         static public void RunTests()
         {
-            Trie.Trie trie = new Trie.Trie();
-            string[] addingWords = new string[] { "he", "she", "hers", "here", "helmet",
+            var trie = new Trie.Trie();
+            var addingWords = new string[] { "he", "she", "hers", "here", "helmet",
                                                   "his", "sheep", "soul", "horn", "God", "shoes" };
-            string[] removingWords = new string[] { "helmet", "God", "she", "soul" };
-            string[] existingWords = new string[] { "he", "hers", "here", "his", "sheep", "horn" };
-            string[] nonExistingWords = new string[] { "godsend", "healthy", "A-mark", "hi", "helmets" };
-            string[] testCasesForCountingFunction = new string[] { "h", "sheep", "hornet", "doom", "sh" };
-            int[] expectedNumbers = new int[] { 3, 1, 0, 0, 2 };
+            var removingWords = new string[] { "helmet", "God", "she", "soul" };
+            var existingWords = new string[] { "he", "hers", "here", "his", "sheep", "horn" };
+            var nonExistingWords = new string[] { "godsend", "healthy", "A-mark", "hi", "helmets" };
+            var testCasesForCountingFunction = new string[] { "h", "sheep", "hornet", "doom", "sh" };
+            var expectedNumbers = new int[] { 3, 1, 0, 0, 2 };
 
             RunTestForAdd(trie, addingWords);
             RunTestForContains(trie, existingWords, nonExistingWords);

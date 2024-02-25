@@ -20,7 +20,7 @@
 
         public bool Add(string element)
         {
-            var node = this.Root;
+            TrieNode node = this.Root;
             foreach (var item in element)
             {
                 if (!node.Vertexes.ContainsKey(item))
@@ -77,7 +77,7 @@
 
         private TrieNode? GetVertex(string element)
         {
-            var node = this.Root;
+            TrieNode node = this.Root;
             foreach (var item in element)
             {
                 if (!node.Vertexes.ContainsKey(item))
