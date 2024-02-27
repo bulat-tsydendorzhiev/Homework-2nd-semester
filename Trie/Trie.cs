@@ -9,18 +9,18 @@
 
             public TrieNode()
             {
-                this.IsEndOfWord = false;
-                this.Vertexes = new Dictionary<char, TrieNode>();
+                IsEndOfWord = false;
+                Vertexes = new Dictionary<char, TrieNode>();
             }
         }
 
         private readonly TrieNode Root;
         public int Size { get; private set; }
-        public Trie() => this.Root = new TrieNode();
+        public Trie() => Root = new TrieNode();
 
         public bool Add(string element)
         {
-            TrieNode node = this.Root;
+            TrieNode node = Root;
             foreach (var item in element)
             {
                 if (!node.Vertexes.ContainsKey(item))
@@ -33,7 +33,7 @@
             if (!node.IsEndOfWord)
             {
                 node.IsEndOfWord = true;
-                ++this.Size;
+                ++Size;
                 return true;
             }
             return false;
@@ -41,7 +41,7 @@
 
         public bool Remove(string element)
         {
-            TrieNode node = this.Root;
+            TrieNode node = Root;
             var stack = new Stack<Tuple<char, TrieNode>>();
             foreach (var item in element)
             {
@@ -58,17 +58,17 @@
             {
                 return false;
             }
-            --this.Size;
+            --Size;
             node.IsEndOfWord = false;
 
             while (stack.Count > 0)
             {
                 if (node.Vertexes.Count == 0 && !node.IsEndOfWord)
                 {
-                    (char deletingLetter, node) = stack.Peek();
-                    node.Vertexes.Remove(deletingLetter);
+                    (char letter, node) = stack.Peek();
+                    node.Vertexes.Remove(letter);
                 }
-                (char letter, node) = stack.Pop();
+                (_, node) = stack.Pop();
             }
 
             stack.Clear();
@@ -77,7 +77,7 @@
 
         private TrieNode? GetVertex(string element)
         {
-            TrieNode node = this.Root;
+            TrieNode node = Root;
             foreach (var item in element)
             {
                 if (!node.Vertexes.ContainsKey(item))
