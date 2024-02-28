@@ -1,2 +1,2 @@
 # Homework-2nd-semester
-для домашнего задания второго семестра
+for second semester university homework
