@@ -1,47 +1,76 @@
-﻿namespace Trie
+﻿using System.Xml.Linq;
+
+namespace Trie
 {
+    /// <summary>
+    /// Trie, data structure for compact string storage.
+    /// </summary>
     public class Trie
     {
         private class TrieNode
         {
             public bool IsEndOfWord;
+            public int PrefixWordsCount;
             public Dictionary<char, TrieNode> Vertexes;
 
             public TrieNode()
             {
-                IsEndOfWord = false;
                 Vertexes = new Dictionary<char, TrieNode>();
             }
         }
 
-        private readonly TrieNode Root;
+        /// <summary>
+        /// Number of elements in trie.
+        /// </summary>
         public int Size { get; private set; }
+        private readonly TrieNode Root;
+
         public Trie() => Root = new TrieNode();
 
+        /// <summary>
+        /// Add element to trie.
+        /// </summary>
+        /// <param name="element">Adding element.</param>
+        /// <returns>true if element wasn't in trie.</returns>
         public bool Add(string element)
         {
-            TrieNode node = Root;
+            var node = Root;
+            var stack = new Stack<TrieNode>();
             foreach (var item in element)
             {
                 if (!node.Vertexes.ContainsKey(item))
                 {
                     node.Vertexes[item] = new TrieNode();
                 }
+                stack.Push(node);
                 node = node.Vertexes[item];
             }
 
-            if (!node.IsEndOfWord)
+            if (node.IsEndOfWord)
             {
-                node.IsEndOfWord = true;
-                ++Size;
-                return true;
+                return false;
             }
-            return false;
+            ++Size;
+            node.IsEndOfWord = true;
+            while (stack.Count > 0)
+            {
+                ++node.PrefixWordsCount;
+                node = stack.Pop();
+            }
+            ++node.PrefixWordsCount;
+
+            stack.Clear();
+            return true;
         }
 
+        /// <summary>
+        /// Remove element from trie.
+        /// </summary>
+        /// <param name="element">Element which should be removed from trie.</param>
+        /// <returns>true if element was removed from trie.</returns>
         public bool Remove(string element)
         {
-            TrieNode node = Root;
+            var node = Root;
             var stack = new Stack<Tuple<char, TrieNode>>();
             foreach (var item in element)
             {
@@ -68,6 +97,7 @@
                     (char letter, node) = stack.Peek();
                     node.Vertexes.Remove(letter);
                 }
+                --node.PrefixWordsCount;
                 (_, node) = stack.Pop();
             }
 
@@ -77,7 +107,7 @@
 
         private TrieNode? GetVertex(string element)
         {
-            TrieNode node = Root;
+            var node = Root;
             foreach (var item in element)
             {
                 if (!node.Vertexes.ContainsKey(item))
@@ -89,16 +119,26 @@
             return node;
         }
 
+        /// <summary>
+        /// Check existance of element in trie.
+        /// </summary>
+        /// <param name="element">Element which should be in trie.</param>
+        /// <returns>true if element contains in trie.</returns>
         public bool Contains(string element)
         {
             TrieNode? node = GetVertex(element);
             return node == null ? false : node.IsEndOfWord;
         }
 
+        /// <summary>
+        /// Count how many words starts with prefix.
+        /// </summary>
+        /// <param name="prefix">Prefix with which words begin.</param>
+        /// <returns>Number of words which starts with prefix.</returns>
         public int HowManyStartsWithPrefix(string prefix)
         {
             TrieNode? node = GetVertex(prefix);
-            return node == null ? 0 : (node.IsEndOfWord && node.Vertexes.Count == 0) ? 1: node.Vertexes.Count;
+            return node == null ? 0 : node.PrefixWordsCount;
         }
     }
 }
