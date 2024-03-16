@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.9.34622.214
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LZW", "LZW\LZW.csproj", "{5F39733A-E268-4FA2-893A-EE5708C08C25}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LZWTests", "LZWTests\LZWTests.csproj", "{2EC919EF-E546-4EBF-9732-C71274B87C54}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{5F39733A-E268-4FA2-893A-EE5708C08C25}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5F39733A-E268-4FA2-893A-EE5708C08C25}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5F39733A-E268-4FA2-893A-EE5708C08C25}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5F39733A-E268-4FA2-893A-EE5708C08C25}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2EC919EF-E546-4EBF-9732-C71274B87C54}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2EC919EF-E546-4EBF-9732-C71274B87C54}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2EC919EF-E546-4EBF-9732-C71274B87C54}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2EC919EF-E546-4EBF-9732-C71274B87C54}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {3AE9C5F2-A00D-4740-A21D-D685A7F29F7E}
+	EndGlobalSection
+EndGlobal
