@@ -3,5 +3,5 @@
 
 Homeworks and tests on C# in second semester from SPbU.
 
-#License
+## License
 Licensed under the [MIT License](https://opensource.org/licenses/MIT). See the `LICENSE` for more information.
