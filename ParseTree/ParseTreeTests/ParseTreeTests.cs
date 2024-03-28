@@ -38,6 +38,22 @@ public class Tests
         Assert.That(Math.Abs(tree.Calculate() - rightAnswer), Is.LessThan(Epsilon));
     }
     
+    [Test]
+    public void PrintShouldReturnRightAnswer()
+    {
+        ParseTree.ParseTree tree = new();
+        var expression = "(* (+ 1 1) 2)";
+        var expected = "((1+1)*2)";
+        tree.Build(expression);
+        
+        using(var output = new StringWriter())
+        {
+            Console.SetOut(output);
+            tree.Print();
+            Assert.That(output.ToString(), Is.EqualTo(expected));
+        }
+    }
+    
     private static IEnumerable<TestCaseData> ValidExpressionsAndThierCorrectCalculatedResults
     {
         get
