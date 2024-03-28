@@ -11,7 +11,7 @@ public class UniqueList : List
     {
         if (Contains(value))
         {
-            throw new ExistingValueException("Such a value is already in the list");
+            throw new ExistingValueException("Such a value is already in the list.");
         }
         
         base.Add(value);
@@ -23,7 +23,7 @@ public class UniqueList : List
     {
         if (Contains(value))
         {
-            throw new ExistingValueException("Such a value is already in the list");
+            throw new ExistingValueException("Such a value is already in the list.");
         }
         
         base.Insert(position, value);
@@ -34,11 +34,11 @@ public class UniqueList : List
     /// </summary>
     /// <param name="value">Deleting value.</param>
     /// <exception cref="NonExistingValueException">Throws when there is no such value in the list.</exception>
-    public void RemoveValue(int value)
+    public void Remove(int value)
     {
         if (!Contains(value))
         {
-            throw new NonExistingValueException("Such a value is not in list");
+            throw new NonExistingValueException("Such a value is not in list.");
         }
         
         RemoveAt(GetPositionByValue(value));
@@ -54,7 +54,7 @@ public class UniqueList : List
             {
                 return;
             }
-            throw new ExistingValueException("Such a value is already in the list");
+            throw new ExistingValueException("Such a value is already in the list.");
         }
         
         base.ChangeValueByPosition(position, value);

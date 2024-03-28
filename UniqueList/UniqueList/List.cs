@@ -5,19 +5,24 @@ namespace UniqueList;
 /// </summary>
 public class List
 {
-    private class ListNode
+    /// <summary>
+    /// Initialize a new instance of List node.
+    /// </summary>
+    /// <param name="value">Value.</param>
+    /// <param name="next">Next node.</param>
+    private class ListNode(int value, ListNode? next)
     {
-        public int Value{ get; set; }
-        
-        public ListNode? Next{ get; set; }
-        
-        public ListNode(int value, ListNode? next)
-        {
-            Value = value;
-            Next = next;
-        }
+        /// <summary>
+        /// Stored value.
+        /// </summary>
+        public int Value { get; set; } = value;
+
+        /// <summary>
+        /// A node after current one.
+        /// </summary>
+        public ListNode? Next { get; set; } = next;
     }
-    
+
     /// <summary>
     /// Amount of elements in list. 
     /// </summary>
@@ -31,9 +36,7 @@ public class List
     /// <param name="value">Adding value.</param>
     public virtual void Add(int value)
     {
-        var lastNode = GetListNodeByPosition(Count - 1);
-        lastNode = new ListNode(value, lastNode);
-        ++Count;
+        Insert(Count, value);
     }
     
     /// <summary>
@@ -41,12 +44,12 @@ public class List
     /// </summary>
     /// <param name="position">Position of inserting element.</param>
     /// <param name="value">New value.</param>
-    /// <exception cref="IndexOutOfRangeException">Throws when there is no such position in the list.</exception>
+    /// <exception cref="ArgumentOutOfRangeException">Throws when there is no such position in the list.</exception>
     public virtual void Insert(int position, int value)
     {
         if (!IsValidPosition(position) && position != Count)
         {
-            throw new IndexOutOfRangeException("Position out of range");
+            throw new ArgumentOutOfRangeException("Position out of range.");
         }
         
         ++Count;
@@ -59,20 +62,19 @@ public class List
         
         var previous = GetListNodeByPosition(position - 1);
         var current = previous.Next;
-        ListNode newNode = new(value, current);
-        previous.Next = newNode;
+        previous.Next = new ListNode(value, current);
     }
     
     /// <summary>
     /// Removes the element at the specified position of the list.
     /// </summary>
     /// <param name="position">Position of deleting element.</param>
-    /// <exception cref="IndexOutOfRangeException">Throws when there is no such position in the list.</exception>
+    /// <exception cref="ArgumentOutOfRangeException">Throws when there is no such position in the list.</exception>
     public void RemoveAt(int position)
     {
         if (!IsValidPosition(position))
         {
-            throw new IndexOutOfRangeException("Position out of range");
+            throw new ArgumentOutOfRangeException("Position out of range");
         }
         
         --Count;
@@ -93,12 +95,12 @@ public class List
     /// </summary>
     /// <param name="position">Changing position.</param>
     /// <param name="value">New value.</param>
-    /// <exception cref="IndexOutOfRangeException">Throws when there is no such position in the list.</exception>
+    /// <exception cref="ArgumentOutOfRangeException">Throws when there is no such position in the list.</exception>
     public virtual void ChangeValueByPosition(int position, int value)
     {
         if (!IsValidPosition(position))
         {
-            throw new IndexOutOfRangeException("Position out of range");
+            throw new ArgumentOutOfRangeException("Position out of range.");
         }
         
         var node = GetListNodeByPosition(position);
@@ -110,12 +112,12 @@ public class List
     /// </summary>
     /// <param name="position">Specified position.</param>
     /// <returns>The value on the specified position.</returns>
-    /// <exception cref="IndexOutOfRangeException">Throws when there is no such position in the list.</exception>
+    /// <exception cref="ArgumentOutOfRangeException">Throws when there is no such position in the list.</exception>
     public int GetValueByPosition(int position)
     {
         if (!IsValidPosition(position))
         {
-            throw new IndexOutOfRangeException("Position out of range");
+            throw new ArgumentOutOfRangeException("Position out of range.");
         }
         
         var node = GetListNodeByPosition(position);
@@ -163,7 +165,7 @@ public class List
     {
         var current = Head;
         
-        for (int i = 0; i < position; ++i)
+        for (var i = 0; i < position; ++i)
         {
             current = current.Next;
         }
