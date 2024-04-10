@@ -1,14 +1,17 @@
 namespace Routers;
 
-public class DisjointSet
+/// <summary>
+/// Disjoint set, a data structure that allows you to administer a set of elements divided into disjoint subsets.
+/// </summary>
+public class DisjointSetUnion
 {
     private SetElement[] _setElements;
 
     /// <summary>
-    /// 
+    /// Initializes a new instance of the <see cref="DisjointSetUnion"/> class.
     /// </summary>
     /// <param name="capacity">Max number of elements in </param>
-    public DisjointSet(int capacity)
+    public DisjointSetUnion(int capacity)
     {
         _setElements = new SetElement[capacity];
         for (int i = 0; i < capacity; ++i)
@@ -17,6 +20,11 @@ public class DisjointSet
         }
     }
 
+    /// <summary>
+    /// Find parent of the element.
+    /// </summary>
+    /// <param name="element">Specified element.</param>
+    /// <returns>Parent of the element.</returns>
     public int Find(int element)
     {
         if (_setElements[element].Parent != element)
@@ -27,6 +35,11 @@ public class DisjointSet
         return _setElements[element].Parent;
     }
 
+    /// <summary>
+    /// Unite two sets containing the first and second elements.
+    /// </summary>
+    /// <param name="firstElement">Element from first set.</param>
+    /// <param name="secondElement">Element from second set.</param>
     public void Unite(int firstElement, int secondElement)
     {
         firstElement = Find(firstElement);

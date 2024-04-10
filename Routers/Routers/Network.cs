@@ -3,7 +3,7 @@ using System.Text;
 namespace Routers;
 
 /// <summary>
-/// Class to work with topology of network by making its optimal configuration.
+/// Class to work with topology of the network by making its optimal configuration.
 /// </summary>
 public class Network
 {
@@ -15,22 +15,22 @@ public class Network
     /// Initializes a new instance of the <see cref="Network"/> class.
     /// </summary>
     /// <param name="filePath">Reading file path.</param>
-    /// <exception cref="ArgumentException">Throws when file path is empty.</exception>
+    /// <exception cref="IncorrectFormatOfFileException">Throws when file is empty.</exception>
     /// <exception cref="IncorrectFormatOfFileException">Throws when invalid format of connections was given from file.</exception>
     /// <exception cref="IncorrectFormatOfFileException">Throws when invalid connection values was given from file.</exception>
     public Network(string filePath)
     {
-        if (filePath == string.Empty)
-        {
-            throw new ArgumentException("File path cannot be empty.");
-        }
-        
         GetNetworkFromFile(filePath);
     }
     
     private void GetNetworkFromFile(string inputFilePath)
     {
         var connections = File.ReadLines(inputFilePath).ToList();
+        
+        if (!connections.Any())
+        {
+            throw new IncorrectFormatOfFileException("File cannot be empty.");
+        }
 
         foreach (var connection in connections)
         {
@@ -46,6 +46,10 @@ public class Network
             foreach (var item in connectedRouters)
             {
                 var routerAndBandwidth = item.Split(' ', StringSplitOptions.RemoveEmptyEntries);
+                if (routerAndBandwidth.Length != 2)
+                {
+                    throw new IncorrectFormatOfFileException("Invalid format of connections.");
+                }
                 
                 int connectedRouter = int.Parse(routerAndBandwidth[0]);
                 int bandwidth = int.Parse(routerAndBandwidth[1]);
@@ -104,7 +108,7 @@ public class Network
     private List<(int Router, int ConnectedRouter, int Bandwidth)> FindMaximumSpanningTree()
     {
         var sortedConnections = _connections.OrderByDescending((connection) => connection.Bandwidth).ToList();
-        var disjointSet = new DisjointSet(_numberOfRouters);
+        var disjointSetUnion = new DisjointSetUnion(_numberOfRouters);
         var result = new List<(int, int, int)>();
         
         int count = 0;
@@ -112,13 +116,13 @@ public class Network
         
         while (count < _numberOfRouters - 1 && i < sortedConnections.Count)
         {
-            int routerParent = disjointSet.Find(sortedConnections[i].Router - 1);
-            int connectedRouterParent = disjointSet.Find(sortedConnections[i].ConnectedRouter - 1);
+            int routerParent = disjointSetUnion.Find(sortedConnections[i].Router - 1);
+            int connectedRouterParent = disjointSetUnion.Find(sortedConnections[i].ConnectedRouter - 1);
             
             if (routerParent != connectedRouterParent)
             {
                 result.Add(sortedConnections[i]);
-                disjointSet.Unite(routerParent, connectedRouterParent);
+                disjointSetUnion.Unite(routerParent, connectedRouterParent);
                 ++count;
             }
 

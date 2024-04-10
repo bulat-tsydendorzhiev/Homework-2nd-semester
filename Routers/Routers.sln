@@ -5,6 +5,8 @@ VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Routers", "Routers\Routers.csproj", "{0978C8FA-14AD-4E12-A78E-8F2872049C2D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RoutersTests", "RoutersTests\RoutersTests.csproj", "{9FA5EBD6-F4E2-4840-AADC-B61BE79A71E7}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -18,5 +20,9 @@ Global
 		{0978C8FA-14AD-4E12-A78E-8F2872049C2D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0978C8FA-14AD-4E12-A78E-8F2872049C2D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0978C8FA-14AD-4E12-A78E-8F2872049C2D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9FA5EBD6-F4E2-4840-AADC-B61BE79A71E7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9FA5EBD6-F4E2-4840-AADC-B61BE79A71E7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9FA5EBD6-F4E2-4840-AADC-B61BE79A71E7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9FA5EBD6-F4E2-4840-AADC-B61BE79A71E7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
