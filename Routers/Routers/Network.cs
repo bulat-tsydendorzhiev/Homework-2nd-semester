@@ -3,7 +3,7 @@ using System.Text;
 namespace Routers;
 
 /// <summary>
-/// Class to work with topology of the network by making its optimal configuration.
+/// Class which works with topology of the network by making its optimal configuration.
 /// </summary>
 public class Network
 {
@@ -66,7 +66,7 @@ public class Network
     }
 
     /// <summary>
-    /// Write configuration to the file.
+    /// Writes configuration to the file.
     /// </summary>
     /// <exception cref="DisconnectedNetworkException">Throws when network is disconnected.</exception>
     /// <param name="outputFilePath">File in which configuration will be written.</param>

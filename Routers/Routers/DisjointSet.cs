@@ -21,7 +21,7 @@ public class DisjointSetUnion
     }
 
     /// <summary>
-    /// Find parent of the element.
+    /// Find parents of the element.
     /// </summary>
     /// <param name="element">Specified element.</param>
     /// <returns>Parent of the element.</returns>
@@ -36,7 +36,7 @@ public class DisjointSetUnion
     }
 
     /// <summary>
-    /// Unite two sets containing the first and second elements.
+    /// Unites two sets containing the first and second elements.
     /// </summary>
     /// <param name="firstElement">Element from first set.</param>
     /// <param name="secondElement">Element from second set.</param>
