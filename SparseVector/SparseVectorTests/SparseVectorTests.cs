@@ -47,11 +47,27 @@ public class Tests
     }
     
     [TestCaseSource(typeof(TestDataClass), nameof(TestDataClass.TestCasesForArgumentExceptionThrowing))]
-    public void multiplicationMethod_ShouldThrow_ArgumentException_WithIncorrectVector(int[] incorrectVector)
+    public void MultiplicationMethod_ShouldThrow_ArgumentException_WithIncorrectVector(int[] incorrectVector)
     {
         var sparseVector = new SparseVector(testVector);
         
         Assert.Throws<ArgumentException>(() => sparseVector.MakeMultiplication(incorrectVector));
+    }
+    
+    [Test]
+    public void IsNullVector_ShouldReturn_True_WithNullVector()
+    {
+        var sparseVector = new SparseVector(new int[] {0, 0, 0, 0, 0});
+        
+        Assert.That(sparseVector.IsNullVector(), Is.True);
+    }
+    
+    [Test]
+    public void IsNullVector_ShouldReturn_False_WithNotNullVector()
+    {
+        var sparseVector = new SparseVector(new int[] {0, 0, 1, 0, 0});
+        
+        Assert.That(sparseVector.IsNullVector(), Is.False);
     }
     
     public bool IsCorrectAnswer(int[] resultVector, int[] expectedVector)

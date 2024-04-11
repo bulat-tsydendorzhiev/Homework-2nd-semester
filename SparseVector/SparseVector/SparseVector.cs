@@ -108,5 +108,5 @@ public class SparseVector
         return result;
     }
 
-    private SortedDictionary<int, int> _sparceVector = new();
+    private Dictionary<int, int> _sparceVector = new();
 }
