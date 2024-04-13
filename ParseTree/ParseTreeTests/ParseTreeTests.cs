@@ -1,4 +1,4 @@
-using ParseTree;
+using ParseTreeTask;
 
 namespace ParseTreeTests;
 
@@ -8,24 +8,24 @@ public class Tests
     
     [Test]
     public void BuildingNullExpressionShouldThrowArgumentNullException()
-    => Assert.Throws<ArgumentNullException>(() => new ParseTree.ParseTree().Build(null));
+    => Assert.Throws<ArgumentNullException>(() => new ParseTree().Build(null));
     
     [Test]
     public void BuildingEmptyExpressionShouldThrowArgumentException()
-        => Assert.Throws<ArgumentException>(() => new ParseTree.ParseTree().Build(""));
+        => Assert.Throws<ArgumentException>(() => new ParseTree().Build(""));
     
     [TestCaseSource(nameof(InvalidExpressions))]
     public void BuildingEmptyStringShouldThrowArgumentException(string expression)
-        => Assert.Throws<ArgumentException>(() => new ParseTree.ParseTree().Build(expression));
+        => Assert.Throws<ArgumentException>(() => new ParseTree().Build(expression));
     
     [Test]
     public void CalculatingNullExpressionShouldThrowInvalidOperationException()
-        => Assert.Throws<InvalidOperationException>(() => new ParseTree.ParseTree().Calculate());
+        => Assert.Throws<InvalidOperationException>(() => new ParseTree().Calculate());
     
     [TestCaseSource(nameof(ExpressionsWithDivizionByZero))]
     public void CalculatingExpressionWithDivizionByZeroShouldThrowArgumentException(string expression)
     {
-        ParseTree.ParseTree tree = new();
+        ParseTree tree = new();
         tree.Build(expression);
         Assert.Throws<ArgumentException>(() => tree.Calculate());
     }
@@ -33,7 +33,7 @@ public class Tests
     [TestCaseSource(nameof(ValidExpressionsAndThierCorrectCalculatedResults))]
     public void CalculatingValidExpressionShouldReturnRightAnswer(string expression, double rightAnswer)
     {
-        ParseTree.ParseTree tree = new();
+        ParseTree tree = new();
         tree.Build(expression);
         Assert.That(Math.Abs(tree.Calculate() - rightAnswer), Is.LessThan(Epsilon));
     }
@@ -41,7 +41,7 @@ public class Tests
     [Test]
     public void PrintShouldReturnRightAnswer()
     {
-        ParseTree.ParseTree tree = new();
+        ParseTree tree = new();
         var expression = "(* (+ 1 1) 2)";
         var expected = "((1+1)*2)";
         tree.Build(expression);

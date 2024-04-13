@@ -1,7 +1,7 @@
 namespace ParseTreeTask;
 
 /// <summary>
-/// Initializes a new instance of Operand.
+/// Initializes a new instance of <see cref="Operand">.
 /// </summary>
 /// <param name="value">Value.</param>
 public class Operand(int value) : INode
