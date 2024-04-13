@@ -1,4 +1,4 @@
-﻿namespace StackCalculator;
+﻿namespace StackCalculatorTask;
 
 /// <summary>
 /// Class which has method for calculating an expression written in postfix form.
@@ -8,7 +8,7 @@ public class StackCalculator
     private const double Epsilon = 1e-7;
 
     /// <summary>
-    /// Calculate the value of an expression written in postfix form.
+    /// Calculates the value of an expression written in postfix form.
     /// </summary>
     /// <param name="expression">Expression written in postfix form.</param>
     /// <param name="stack">Using stack.</param>
@@ -17,10 +17,7 @@ public class StackCalculator
     /// <exception cref="ArgumentException">Invalid expression.</exception>
     public static double CalculateExpression(string? expression, IStack stack)
     {
-        if (expression == null)
-        {
-            throw new ArgumentException("Invalid expression");
-        }
+        ArgumentNullException.ThrowIfNull(expression);
 
         var expressionElements = expression.Split();
 
@@ -38,11 +35,11 @@ public class StackCalculator
                 }
                 catch (DivideByZeroException)
                 {
-                    throw new DivideByZeroException("Division by zero");
+                    throw new DivideByZeroException("Division by zero.");
                 }
                 catch
                 {
-                    throw new ArgumentException("Invalid expression");
+                    throw new ArgumentException("Invalid expression.");
                 }
             }
             else
@@ -54,7 +51,7 @@ public class StackCalculator
                 }
                 catch
                 {
-                    throw new ArgumentException("Invalid expression");
+                    throw new ArgumentException("Invalid expression.");
                 }
             }
         }
@@ -67,12 +64,12 @@ public class StackCalculator
         }
         catch (InvalidOperationException)
         {
-            throw new ArgumentException("Invalid expression");
+            throw new ArgumentException("Invalid expression.");
         }
 
         if (!stack.IsEmpty())
         {
-            throw new ArgumentException("Invalid expression");
+            throw new ArgumentException("Invalid expression.");
         }
 
         stack.Clear();

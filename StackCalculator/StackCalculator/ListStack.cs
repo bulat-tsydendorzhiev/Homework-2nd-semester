@@ -1,4 +1,4 @@
-﻿namespace StackCalculator;
+﻿namespace StackCalculatorTask;
 
 /// <summary>
 /// Implementation of a stack on an list.
@@ -8,11 +8,11 @@ public class ListStack : IStack
     private readonly List<double> StackElements;
 
     /// <summary>
-    /// Initializes a new object ListStack.
+    /// Initializes a new instance of <see cref="ArrayStack">.
     /// </summary>
     public ListStack()
     {
-        StackElements = new List<double>();
+        StackElements = [];
     }
 
     /// <inheritdoc />

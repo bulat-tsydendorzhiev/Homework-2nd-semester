@@ -1,4 +1,4 @@
-﻿namespace StackCalculator;
+﻿namespace StackCalculatorTask;
 
 /// <summary>
 /// Implementation of a stack on an array.
@@ -10,7 +10,7 @@ public class ArrayStack : IStack
     private int Count;
 
     /// <summary>
-    /// Initializes a new object ArrayStack.
+    /// Initializes a new instance of <see cref="ArrayStack">.
     /// </summary>
     public ArrayStack()
     {
