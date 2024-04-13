@@ -1,32 +1,31 @@
 ﻿namespace LZW;
 
 /// <summary>
-/// Trie, data structure for compact string storage.
+/// Trie, data structure for compact byte sequence storage.
 /// </summary>
 public class Trie
 {
     private class TrieNode
     {
         /// <summary>
-        /// Field that shows end of word.
+        /// Shows whether current node is end of word.
         /// </summary>
-        public bool IsEndOfWord;
+        public bool IsEndOfWord {get; set; }
 
         /// <summary>
-        /// Value in trie node.
+        /// Value from trie node.
         /// </summary>
-        public int Value;
+        public int Value {get; set; }
 
         /// <summary>
         /// Vertexes of next words.
         /// </summary>
-        public Dictionary<byte, TrieNode> Vertexes;
+        public Dictionary<byte, TrieNode> Vertexes {get; set; }
 
         public TrieNode()
         {
-            Vertexes = new Dictionary<byte, TrieNode>();
+            Vertexes = [];
         }
-
     }
 
     /// <summary>
@@ -34,12 +33,15 @@ public class Trie
     /// </summary>
     public int Size { get; private set; }
 
-    private readonly TrieNode Root;
+    private readonly TrieNode _root;
 
     /// <summary>
-    /// Creates and initializes a new instance of Trie.
+    /// Initializes a new instance of <see cref="Trie">.
     /// </summary>
-    public Trie() => Root = new TrieNode();
+    public Trie()
+    {
+        _root = new TrieNode();
+    }
 
     /// <summary>
     /// Adds element to trie.
@@ -48,7 +50,7 @@ public class Trie
     /// <returns>true if element was added to trie; otherwise false.</returns>
     public bool Add(List<byte> element, int value)
     {
-        var node = Root;
+        var node = _root;
         foreach (var item in element)
         {
             if (!node.Vertexes.ContainsKey(item))
@@ -77,8 +79,8 @@ public class Trie
     /// <returns>true if element was removed from trie; otherwise false.</returns>
     public bool Remove(List<byte> element)
     {
-        var node = Root;
-        var stack = new Stack<Tuple<byte, TrieNode>>();
+        var node = _root;
+        var stack = new Stack<(byte, TrieNode)>();
         foreach (var item in element)
         {
             if (!node.Vertexes.ContainsKey(item))
@@ -86,7 +88,7 @@ public class Trie
                 return false;
             }
 
-            stack.Push(new Tuple<byte, TrieNode>(item, node));
+            stack.Push((item, node));
             node = node.Vertexes[item];
         }
 
@@ -114,7 +116,7 @@ public class Trie
 
     private TrieNode? GetVertex(List<byte> element)
     {
-        var node = Root;
+        var node = _root;
         foreach (var item in element)
         {
             if (!node.Vertexes.ContainsKey(item))
@@ -127,7 +129,7 @@ public class Trie
     }
 
     /// <summary>
-    /// Checks existance of element in trie.
+    /// Determines whether an element is in trie.
     /// </summary>
     /// <param name="element">Element which should be in trie.</param>
     /// <returns>true if element contains in trie; otherwise false.</returns>

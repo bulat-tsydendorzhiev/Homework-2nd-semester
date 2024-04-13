@@ -1,8 +1,6 @@
 ﻿using LZW;
-using BWT;
-using System.ComponentModel.DataAnnotations;
 
-namespace LZWTransform;
+namespace LZWTask;
 
 /// <summary>
 /// Class which has methods of compressing, decompressing files and writting them to a new path.
@@ -16,7 +14,6 @@ public static class LZWTransform
     /// <param name="filePath">File path.</param>
     /// <param name="shouldUseBWT">Shows the need to use Burrows-Wheeler transform.</param>
     /// <returns>Ratio of compressing.</returns>
-    /// <exception cref="ArgumentException">File data cannot be empty.</exception>
     public static double Compress(string filePath, bool shouldUseBWT = false)
     {
         if (!File.Exists(filePath))
@@ -24,11 +21,12 @@ public static class LZWTransform
             Console.WriteLine("There is no such file!");
             return -1;
         }
+
         var input = File.ReadAllBytes(filePath);
 
         if (shouldUseBWT)
         {
-            var (bwtResult, endPosition) = BWT.BWT.Transform(input);
+            var (bwtResult, endPosition) = BWT.Transform(input);
 
             var endPositionBytes = BitConverter.GetBytes(endPosition);
 
@@ -42,13 +40,14 @@ public static class LZWTransform
         }
 
         byte[] compressed;
+        
         try
         {
             compressed = LZWCompressor.Compress(input);
         }
-        catch (ArgumentException)
+        catch (ArgumentException ex)
         {
-            Console.WriteLine("File cannot be empty!");
+            Console.WriteLine(ex.Message);
             return -1;
         }
 
@@ -68,8 +67,7 @@ public static class LZWTransform
     /// </summary>
     /// <param name="filePath">File path.</param>
     /// <param name="shouldUseBWT">Shows the need to use Burrows-Wheeler transform.</param>
-    /// <returns>true if exception didn't occur; otherwise false.</returns> 
-    /// <exception cref="ArgumentException">File data cannot be empty.</exception>
+    /// <returns>true if invalid file path was given; otherwise false.</returns> 
     public static bool Decompress(string filePath, bool shouldUseBWT = false)
     {
         if (!File.Exists(filePath) || filePath[^7..] != ".zipped")
@@ -81,20 +79,21 @@ public static class LZWTransform
         var input = File.ReadAllBytes(filePath);
 
         byte[] decompressed;
+        
         try
         {
             decompressed = LZWDecompressor.Decompress(input);
         }
-        catch (ArgumentException)
+        catch (ArgumentException ex)
         {
-            Console.WriteLine("File cannot be empty!");
+            Console.WriteLine(ex.Message);
             return false;
         }
 
         string newFilePath = filePath[..^7];
 
         File.WriteAllBytes(newFilePath, shouldUseBWT
-                                        ? BWT.BWT.InverseTransform(decompressed[4..], BitConverter.ToInt32(decompressed, 0))
+                                        ? BWT.InverseTransform(decompressed[4..], BitConverter.ToInt32(decompressed, 0))
                                         : decompressed);
         return true;
     }

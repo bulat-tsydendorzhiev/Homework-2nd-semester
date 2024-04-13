@@ -10,21 +10,22 @@ public static class LZWCompressor
     /// <summary>
     /// Compresses byte array using LZW encoding algorithm.
     /// </summary>
-    /// <param name="input">Byte array.</param>
+    /// <param name="input">Compressing byte array.</param>
     /// <returns>Compressed byte array.</returns>
-    /// <exception cref="ArgumentException">Input cannot not empty.</exception>
+    /// <exception cref="ArgumentException">Throws when input byte array was empty.</exception>
     public static byte[] Compress(byte[] input)
     {
         if (input.Length == 0)
         {
-            throw new ArgumentException("input cannot be empty");
+            throw new ArgumentException("Input cannot be empty");
         }
 
-        CompressionBuffer buffer = new();
-
+        var buffer = new CompressionBuffer();
         var table = InitEncodingTable();
-        List<byte> element = new();
-        int currentMaxSize = InitialTableSize;
+        
+        var element = new List<byte>();
+        
+        var currentMaxSize = InitialTableSize;
 
         for (int i = 0; i < input.Length; ++i)
         {
@@ -52,20 +53,22 @@ public static class LZWCompressor
                 element.Add(input[i]);
             }
         }
+        
         var lastValue = table.GetValue(element);
 
         buffer.AddNewByte(lastValue);
         buffer.AddLastByte();
 
-        return buffer.CompressedBytes.ToArray();
+        return [.. buffer.CompressedBytes];
     }
 
     private static Trie InitEncodingTable()
     {
         var table = new Trie();
+        
         for (int i = 0; i < InitialTableSize; ++i)
         {
-            table.Add(new List<byte> { (byte)i }, i);
+            table.Add([(byte)i], i);
         }
 
         return table;

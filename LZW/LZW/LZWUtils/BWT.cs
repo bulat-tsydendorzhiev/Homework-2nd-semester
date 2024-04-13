@@ -1,4 +1,4 @@
-﻿namespace BWT;
+﻿namespace LZW;
 
 /// <summary>
 /// Class <c>Burrows-Wheeler Transform</c> which has methods of direct and inverse transform using Burrows-Wheeler algorithm.
@@ -8,7 +8,7 @@ public static class BWT
     private const int AlphabetSize = 256;
 
     /// <summary>
-    /// Transforms byte array using the Burrows-Wheeler algorithm.
+    /// Transforms byte array using the Burrows-Wheeler algorithm for further better compression.
     /// </summary>
     /// <param name="input">Byte array which will be transformed.</param>
     /// <returns>
@@ -94,6 +94,7 @@ public static class BWT
                 return 1;
             }
         }
+        
         return 0;
     }
 }

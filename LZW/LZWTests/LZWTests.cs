@@ -1,87 +1,55 @@
-using LZWTransform;
+using LZWTask;
 
 namespace LZWTests;
 
 public class LZWTests
 {
+    public const double Epsilon = 0.0000001;
 
-    [TestCase("..\\..\\..\\TestFiles\\MasterAndMargarita.txt")]
-    [TestCase("..\\..\\..\\TestFiles\\видео с котиками.mp4")]
-    [TestCase("..\\..\\..\\TestFiles\\Rick visiting piss master.png")]
-    public void CompressingAndDecompressingWithoutBWTShouldNotChangeTheFile(string filePath)
+    [TestCaseSource(typeof(TestDataClass), nameof(TestDataClass.TestCasesWithValidFilePaths))]
+    public void CompressingAndDecompressingOf_ValidFiles_WithoutBWT_ShouldNotChangeTheFile(string filePath)
     {
         var original = File.ReadAllBytes(filePath);
 
-        LZWTransform.LZWTransform.Compress(filePath);
-        LZWTransform.LZWTransform.Decompress(filePath + ".zipped");
+        LZWTransform.Compress(filePath);
+        LZWTransform.Decompress(filePath + ".zipped");
 
         var transformed = File.ReadAllBytes(filePath);
 
         Assert.That(Compare(original, transformed), Is.True);
     }
 
-    [TestCase("..\\..\\..\\TestFiles\\MasterAndMargarita.txt")]
-    [TestCase("..\\..\\..\\TestFiles\\видео с котиками.mp4")]
-    [TestCase("..\\..\\..\\TestFiles\\Rick visiting piss master.png")]
-    public void CompressingAndDecompressingWithBWTShouldNotChangeTheFile(string filePath)
+    [TestCaseSource(typeof(TestDataClass), nameof(TestDataClass.TestCasesWithValidFilePaths))]
+    public void CompressingAndDecompressingOf_ValidFiles_WithBWT_ShouldNotChangeTheFile(string filePath)
     {
         var original = File.ReadAllBytes(filePath);
 
-        LZWTransform.LZWTransform.Compress(filePath, true);
-        LZWTransform.LZWTransform.Decompress(filePath + ".zipped", true);
+        LZWTransform.Compress(filePath, true);
+        LZWTransform.Decompress(filePath + ".zipped", true);
 
         var transformed = File.ReadAllBytes(filePath);
 
         Assert.That(Compare(original, transformed), Is.True);
     }
 
-    [TestCase("..\\..\\..\\TestFiles\\Empty.cs")]
-    public void Compressing_EmptyFileWithoutBWTShouldReturnMinusOne(string filePath)
+    [TestCaseSource(typeof(TestDataClass), nameof(TestDataClass.TestCasesWithInvalidFilePaths))]
+    public void CompressingAndDecompressingOf_InvalidFiles_WithoutBWT_ShouldReturn_CorrespondingValuesOfEachMethod(string filePath)
     {
-        Assert.That(Math.Abs(-1 - LZWTransform.LZWTransform.Compress(filePath)), Is.LessThan(0.0000001));
+        Assert.Multiple(() =>
+        {
+            Assert.That(Math.Abs(-1 - LZWTransform.Compress(filePath)), Is.LessThan(Epsilon));
+            Assert.That(LZWTransform.Decompress(filePath), Is.False);
+        });
     }
 
-    [TestCase("..\\..\\..\\TestFiles\\Empty.cs")]
-    public void Decompressing_EmptyFileWithoutBWTShouldReturnFalse(string filePath)
+    [TestCaseSource(typeof(TestDataClass), nameof(TestDataClass.TestCasesWithInvalidFilePaths))]
+    public void CompressingAndDecompressingOf_InvalidFiles_WithBWT_ShouldReturn_CorrespondingValuesOfEachMethod(string filePath)
     {
-        Assert.That(LZWTransform.LZWTransform.Decompress(filePath), Is.False);
-    }
-
-    [TestCase("..\\..\\..\\TestFiles\\Empty.cs")]
-    public void Compressing_EmptyFileWithBWTShouldReturnMinusOne(string filePath)
-    {
-        Assert.That(Math.Abs(-1 - LZWTransform.LZWTransform.Compress(filePath, true)), Is.LessThan(0.0000001));
-    }
-
-    [TestCase("..\\..\\..\\TestFiles\\Empty.cs")]
-    public void Decompressing_EmptyFileWithBWTShouldReturnFalse(string filePath)
-    {
-        Assert.That(LZWTransform.LZWTransform.Decompress(filePath, true), Is.False);
-    }
-
-    [TestCase("..\\..\\..\\TestFiles\\Empty.txt")]
-    public void Compressing_NonExistingFileWithoutBWTShouldReturnMinusOne(string filePath)
-    {
-        Assert.That(Math.Abs(-1 - LZWTransform.LZWTransform.Compress(filePath)), Is.LessThan(0.0000001));
-    }
-
-    [TestCase("..\\..\\..\\TestFiles\\Empty.txt")]
-    public void Decompressing_NonExistinFileWithoutBWTShouldReturnFalse(string filePath)
-    {
-        Assert.That(LZWTransform.LZWTransform.Decompress(filePath), Is.False);
-    }
-
-
-    [TestCase("..\\..\\..\\TestFiles\\Empty.txt")]
-    public void Compressing_NonExistingFileWithBWTShouldReturnMinusOne(string filePath)
-    {
-        Assert.That(Math.Abs(-1 - LZWTransform.LZWTransform.Compress(filePath, true)), Is.LessThan(0.0000001));
-    }
-
-    [TestCase("..\\..\\..\\TestFiles\\Empty.txt")]
-    public void Decompressing_NonExistinFileWithBWTShouldReturnFalse(string filePath)
-    {
-        Assert.That(LZWTransform.LZWTransform.Decompress(filePath, true), Is.False);
+        Assert.Multiple(() =>
+        {
+            Assert.That(Math.Abs(-1 - LZWTransform.Compress(filePath, true)), Is.LessThan(Epsilon));
+            Assert.That(LZWTransform.Decompress(filePath, true), Is.False);
+        });
     }
 
     private static bool Compare(byte[] input, byte[] output)
@@ -100,5 +68,21 @@ public class LZWTests
         }
 
         return true;
+    }
+    
+    private class TestDataClass
+    {
+        public static object[] TestCasesWithValidFilePaths =
+        {
+            "../../../TestFiles/MasterAndMargarita.txt",
+            "../../../TestFiles/VideoWithCats.mp4",
+            "../../../TestFiles/RickVisitsPissMaster.png"
+        };
+        
+        public static object[] TestCasesWithInvalidFilePaths =
+        {
+            "../../../TestFiles/Empty.txt",
+            "../../../TestFiles/Empty.cs",
+        };
     }
 }

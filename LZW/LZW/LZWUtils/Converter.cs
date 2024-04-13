@@ -10,13 +10,13 @@ public static class Converter
     /// </summary>
     /// <param name="binary">Binary representation.</param>
     /// <returns>Integer value of binary representation.</returns>
-    public static int ConvertBitsToInt(List<byte> binary)
+    public static int ConvertBitsToInt(List<bool> binary)
     {
         int result = 0;
 
         foreach (var bit in binary)
         {
-            result = (result << 1) + bit;
+            result = (result << 1) + Convert.ToInt32(bit);
         }
 
         return result;
@@ -28,18 +28,19 @@ public static class Converter
     /// <param name="value">Converting value.</param>
     /// <param name="byteSize">Number of digits in binary representation of value.</param>
     /// <returns>Binary representation of value.</returns>
-    public static List<byte> ConvertIntToBits(int value, int byteSize)
+    public static List<bool> ConvertIntToBits(int value, int byteSize)
     {
-        var binary = new List<byte>();
+        var binary = new List<bool>();
+        
         while (value > 0)
         {
-            binary.Add((byte)(value % 2));
+            binary.Add(value % 2 != 0);
             value /= 2;
         }
 
         while (binary.Count < byteSize)
         {
-            binary.Add(0);
+            binary.Add(false);
         }
 
         binary.Reverse();

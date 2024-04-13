@@ -10,9 +10,9 @@ public static class LZWDecompressor
     /// <summary>
     /// Decompresses byte array using LZW decoding algorithm.
     /// </summary>
-    /// <param name="input">Byte array.</param>
+    /// <param name="input">Decompressing byte array.</param>
     /// <returns>Decompressed byte array.</returns>
-    /// <exception cref="ArgumentException">Input cannot be empty.</exception>
+    /// <exception cref="ArgumentException">Throws when input byte array was empty.</exception>
     public static byte[] Decompress(byte[] input)
     {
         if (input.Length == 0)
@@ -20,10 +20,9 @@ public static class LZWDecompressor
             throw new ArgumentException("Input cannot be empty");
         }
 
-        DecompressorBuffer buffer = new();
-
+        var buffer = new DecompressorBuffer();
         var table = InitDecodingTable();
-        var fullByte = new List<byte>();
+        
         List<byte> previous = [.. table[input[0]]];
         List<byte> output = [.. previous];
 
@@ -55,15 +54,16 @@ public static class LZWDecompressor
             previous = entry;
         }
 
-        return output.ToArray();
+        return [.. output];
     }
 
     private static Dictionary<int, List<byte>> InitDecodingTable()
     {
         var table = new Dictionary<int, List<byte>>();
+        
         for (int i = 0; i < InitialTableSize; ++i)
         {
-            table.Add(i, new List<byte>() { (byte)i });
+            table.Add(i, [(byte)i]);
         }
 
         return table;

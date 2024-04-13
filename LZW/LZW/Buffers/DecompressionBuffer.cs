@@ -10,9 +10,9 @@ public class DecompressorBuffer
     /// </summary>
     public int BitsInCurrentByte { get; set; } = ByteSizeInBits;
 
-    private List<byte> CurrentByte = new();
+    private readonly List<bool> _currentByte = [];
 
-    private List<byte> RemainedBits = new();
+    private readonly List<bool> _remainedBits = [];
 
     private const int ByteSizeInBits = 8;
 
@@ -27,19 +27,19 @@ public class DecompressorBuffer
 
         while (binary.Count > 0)
         {
-            RemainedBits.Add(binary[0]);
+            _remainedBits.Add(binary[0]);
             binary.RemoveAt(0);
         }
 
-        if (RemainedBits.Count < BitsInCurrentByte)
+        if (_remainedBits.Count < BitsInCurrentByte)
         {
             return false;
         }
 
-        while (CurrentByte.Count < BitsInCurrentByte)
+        while (_currentByte.Count < BitsInCurrentByte)
         {
-            CurrentByte.Add(RemainedBits[0]);
-            RemainedBits.RemoveAt(0);
+            _currentByte.Add(_remainedBits[0]);
+            _remainedBits.RemoveAt(0);
         }
 
         return true;
@@ -51,8 +51,8 @@ public class DecompressorBuffer
     /// <returns>Value of current byte.</returns>
     public int GetValueOfCurrentByte()
     {
-        int value = Converter.ConvertBitsToInt(CurrentByte);
-        CurrentByte.Clear();
+        int value = Converter.ConvertBitsToInt(_currentByte);
+        _currentByte.Clear();
         return value;
     }
 }

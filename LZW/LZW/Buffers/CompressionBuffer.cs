@@ -8,14 +8,14 @@ public class CompressionBuffer
     /// <summary>
     /// Compressed bytes.
     /// </summary>
-    public List<byte> CompressedBytes { get; private set; } = new();
+    public List<byte> CompressedBytes { get; private set; } = [];
 
     /// <summary>
     /// Number of bits for coding one byte.
     /// </summary>
     public int BitsInCurrentByte { get; set; } = ByteSizeInBits;
 
-    private List<byte> CurrentBits = new();
+    private List<bool> _currentBits = [];
 
     private const int ByteSizeInBits = 8;
 
@@ -27,34 +27,34 @@ public class CompressionBuffer
     {
         var binaryValue = Converter.ConvertIntToBits(value, BitsInCurrentByte);
 
-        while (binaryValue.Count + CurrentBits.Count >= ByteSizeInBits)
+        while (binaryValue.Count + _currentBits.Count >= ByteSizeInBits)
         {
-            while (CurrentBits.Count < ByteSizeInBits)
+            while (_currentBits.Count < ByteSizeInBits)
             {
-                CurrentBits.Add(binaryValue[0]);
+                _currentBits.Add(binaryValue[0]);
                 binaryValue.RemoveAt(0);
             }
 
-            CompressedBytes.Add((byte)Converter.ConvertBitsToInt(CurrentBits));
-            CurrentBits.Clear();
+            CompressedBytes.Add((byte)Converter.ConvertBitsToInt(_currentBits));
+            _currentBits.Clear();
         }
 
-        CurrentBits = binaryValue;
+        _currentBits = binaryValue;
     }
 
     /// <summary>
-    /// Adds last byte.
+    /// Adds last byte to compressed bytes.
     /// </summary>
     public void AddLastByte()
     {
-        if (CurrentBits.Count != 0 && CurrentBits.Any((bit) => bit != 0))
+        if (_currentBits.Count != 0 && _currentBits.Any((bit) => bit))
         {
-            while (CurrentBits.Count < ByteSizeInBits)
+            while (_currentBits.Count < ByteSizeInBits)
             {
-                CurrentBits.Add(0);
+                _currentBits.Add(false);
             }
 
-            CompressedBytes.Add((byte)Converter.ConvertBitsToInt(CurrentBits));
+            CompressedBytes.Add((byte)Converter.ConvertBitsToInt(_currentBits));
         }
     }
 }
