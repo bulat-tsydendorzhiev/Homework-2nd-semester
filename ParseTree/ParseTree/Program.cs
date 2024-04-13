@@ -1,4 +1,4 @@
-﻿﻿using ParseTree;
+﻿﻿using ParseTreeTask;
 
 if (args.Length != 1)
 {
@@ -13,6 +13,7 @@ if (args[0] == "-help")
 }
 
 string filePath = args[0];
+
 if (!File.Exists(filePath))
 {
     Console.WriteLine("File with such path doesn't exist.");
@@ -21,7 +22,7 @@ if (!File.Exists(filePath))
 
 var expression = File.ReadAllText(filePath);
 
-ParseTree.ParseTree tree = new();
+var tree = new ParseTree();
 
 try 
 {
@@ -44,7 +45,7 @@ catch (ArgumentException ex1)
 {
     Console.WriteLine(ex1.Message);
 }
-catch(InvalidOperationException ex2)
+catch (InvalidOperationException ex2)
 {
     Console.WriteLine(ex2.Message);
 }

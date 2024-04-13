@@ -1,4 +1,4 @@
-namespace ParseTree;
+namespace ParseTreeTask;
 
 /// <summary>
 /// Parse tree, class to calculate and print expression written in prefix form.

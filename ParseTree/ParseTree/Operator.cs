@@ -1,7 +1,7 @@
-namespace ParseTree;
+namespace ParseTreeTask;
 
 /// <summary>
-/// Initializes a new instance of Operator.
+/// Initializes a new instance of <see cref="Operator">.
 /// </summary>
 /// <param name="operation">Operation.</param>
 public class Operator(string operation) : INode
