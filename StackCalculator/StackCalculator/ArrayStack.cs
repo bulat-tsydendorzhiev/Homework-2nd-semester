@@ -3,45 +3,37 @@
 /// <summary>
 /// Implementation of a stack on an array.
 /// </summary>
-public class ArrayStack : IStack
+public class ArrayStack<T> : IStack<T>
 {
     private const int InitialCapacity = 10;
-    private double[] StackElements;
-    private int Count;
-
-    /// <summary>
-    /// Initializes a new instance of <see cref="ArrayStack">.
-    /// </summary>
-    public ArrayStack()
-    {
-        StackElements = new double[InitialCapacity];
-    }
+    private T?[] _stackElements = new T?[InitialCapacity];
+    private int _count;
 
     /// <inheritdoc />
-    public bool IsEmpty() => Count == 0;
+    public bool IsEmpty() => _count == 0;
 
     /// <inheritdoc />
-    public void Push(double value)
+    public void Push(T value)
     {
-        if (Count == StackElements.Length)
+        if (_count == _stackElements.Length)
         {
-            Array.Resize(ref StackElements, StackElements.Length * 2);
+            Array.Resize(ref _stackElements, _stackElements.Length * 2);
         }
 
-        StackElements[Count++] = value;
+        _stackElements[_count++] = value;
     }
 
     /// <inheritdoc />
-    public double Pop()
+    public T Pop()
     {
         if (IsEmpty())
         {
             throw new InvalidOperationException("Stack is empty. You can't delete anything from it.");
         }
 
-        --Count;
-        var value = StackElements[Count];
-        StackElements[Count] = 0;
+        --_count;
+        var value = _stackElements[_count];
+        _stackElements[_count] = default;
 
         return value;
     }
@@ -49,9 +41,8 @@ public class ArrayStack : IStack
     /// <inheritdoc />
     public void Clear()
     {
-        StackElements = new double[InitialCapacity];
-        Count = 0;
+        _stackElements = new T[InitialCapacity];
+        _count = 0;
     }
-
 }
 

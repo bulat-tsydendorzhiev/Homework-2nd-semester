@@ -15,7 +15,7 @@ public class StackCalculator
     /// <returns>Result of calculating.</returns>
     /// <exception cref="DivideByZeroException">Division by zero.</exception>
     /// <exception cref="ArgumentException">Invalid expression.</exception>
-    public static double CalculateExpression(string? expression, IStack stack)
+    public static double CalculateExpression(string? expression, IStack<double> stack)
     {
         ArgumentNullException.ThrowIfNull(expression);
 

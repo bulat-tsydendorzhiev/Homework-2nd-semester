@@ -5,15 +5,15 @@ var expression = Console.ReadLine();
 
 try
 {
-    double result = StackCalculator.CalculateExpression(expression, new ListStack());
+    var result = StackCalculator.CalculateExpression(expression, new ListStack<double>());
     Console.WriteLine($"Result of calculating = {result}");
 }
-catch (ArgumentException)
+catch (ArgumentException ex1)
 {
-    Console.WriteLine("Wrong format of expression");
+    Console.WriteLine(ex1.Message);
 }
-catch (DivideByZeroException)
+catch (DivideByZeroException ex2)
 {
-    Console.WriteLine("You are not a god to divide by zero");
+    Console.WriteLine(ex2.Message);
 }
 

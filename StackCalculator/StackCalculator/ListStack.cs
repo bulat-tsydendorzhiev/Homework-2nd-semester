@@ -3,44 +3,35 @@
 /// <summary>
 /// Implementation of a stack on an list.
 /// </summary>
-public class ListStack : IStack
+public class ListStack<T> : IStack<T>
 {
-    private readonly List<double> StackElements;
+    private readonly List<T> _stackElements = [];
 
-    /// <summary>
-    /// Initializes a new instance of <see cref="ArrayStack">.
-    /// </summary>
-    public ListStack()
+    /// <inheritdoc />
+    public bool IsEmpty() => _stackElements.Count == 0;
+
+    /// <inheritdoc />
+    public void Push(T value)
     {
-        StackElements = [];
+        _stackElements.Add(value);
     }
 
     /// <inheritdoc />
-    public bool IsEmpty() => StackElements.Count == 0;
-
-    /// <inheritdoc />
-    public void Push(double value)
+    public T Pop()
     {
-        StackElements.Add(value);
-    }
-
-    /// <inheritdoc />
-    public double Pop()
-    {
-        if (StackElements.Count == 0)
+        if (_stackElements.Count == 0)
         {
             throw new InvalidOperationException("Stack is empty. You can't delete anything from it.");
         }
 
-        var value = StackElements.Last();
-        StackElements.RemoveAt(StackElements.Count - 1);
+        var value = _stackElements.Last();
+        _stackElements.RemoveAt(_stackElements.Count - 1);
         return value;
     }
 
     /// <inheritdoc />
     public void Clear()
     {
-        StackElements.Clear();
+        _stackElements.Clear();
     }
-
 }
