@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SkipList", "SkipList\SkipList.csproj", "{DC4E1B4B-625C-4FC4-A686-A71662A3F724}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SkipListTests", "SkipListTests\SkipListTests.csproj", "{3B57E98D-8FA0-492E-8CD6-A0E317491F12}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{DC4E1B4B-625C-4FC4-A686-A71662A3F724}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DC4E1B4B-625C-4FC4-A686-A71662A3F724}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DC4E1B4B-625C-4FC4-A686-A71662A3F724}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DC4E1B4B-625C-4FC4-A686-A71662A3F724}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3B57E98D-8FA0-492E-8CD6-A0E317491F12}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3B57E98D-8FA0-492E-8CD6-A0E317491F12}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3B57E98D-8FA0-492E-8CD6-A0E317491F12}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3B57E98D-8FA0-492E-8CD6-A0E317491F12}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
