@@ -11,9 +11,11 @@ public class SkipList<T> : IList<T>
 {
     private const int MaxLevel = 5;
 
+    private readonly Random _random = new();
+
     private int _currentMaxLevel = 1; 
 
-    private readonly Random _random = new();
+    private int _version;
 
     private SkipListNode _head;
 
@@ -22,7 +24,7 @@ public class SkipList<T> : IList<T>
     /// </summary>
     public SkipList()
     {
-        _head = new(default, _currentMaxLevel);
+        _head = new(default, MaxLevel);
     }
 
     /// <inheritdoc/>
@@ -37,7 +39,7 @@ public class SkipList<T> : IList<T>
 
             var currentNode = _head;
 
-            for (int i = 0; i < index; ++i)
+            for (int i = 0; i <= index; ++i)
             {
                 currentNode = currentNode.Next[0];
             }
@@ -65,7 +67,7 @@ public class SkipList<T> : IList<T>
         {
             while (currentNode.Next[i] is not null)
             {
-                if (value.CompareTo(currentNode.Value) < 0)
+                if (value.CompareTo(currentNode.Next[i].Value) < 0)
                 {
                     break;
                 }
@@ -79,7 +81,8 @@ public class SkipList<T> : IList<T>
                 currentNode.Next[i] = newNode;
             }
         }
-        
+
+        ++_version;
         ++Count;
     }
 
@@ -88,13 +91,32 @@ public class SkipList<T> : IList<T>
     {
         Count = 0;
         _currentMaxLevel = 1;
-        _head = new(default, _currentMaxLevel);
+        _head = new(default, MaxLevel);
     }
 
     /// <inheritdoc/>
     public bool Contains(T value)
     {
-        return IndexOf(value) != -1;
+        var currentNode = _head;
+
+        for (int i = _currentMaxLevel - 1; i >= 0; --i)
+        {
+            while (currentNode.Next[i] is not null)
+            {
+                if (value.CompareTo(currentNode.Next[i].Value) < 0)
+                {
+                    break;
+                }
+                else if (value.CompareTo(currentNode.Next[i].Value) == 0)
+                {
+                    return true;
+                }
+
+                currentNode = currentNode.Next[i];
+            }
+        }
+
+        return false;
     }
 
     /// <inheritdoc/>
@@ -102,7 +124,7 @@ public class SkipList<T> : IList<T>
     {
         ArgumentNullException.ThrowIfNull(array);
 
-        if (arrayIndex < 0 || arrayIndex >= Count)
+        if (arrayIndex < 0 || arrayIndex >= array.Length)
         {
             throw new ArgumentOutOfRangeException(nameof(arrayIndex));
         }
@@ -129,26 +151,17 @@ public class SkipList<T> : IList<T>
     public int IndexOf(T value)
     {
         var currentNode = _head;
-        int index = 0;
-        
-        for (int i = _currentMaxLevel - 1; i >= 0; --i)
-        {
-            while (currentNode.Next[i] is not null)
-            {
-                if (value.CompareTo(currentNode.Value) < 0)
-                {
-                    break;
-                }
-                else if (value.CompareTo(currentNode.Value) == 0)
-                {
-                    return index;
-                }
 
-                currentNode = currentNode.Next[i];
-                ++index;
+        for (int i = 0; currentNode.Next[0] is not null; ++i)
+        {
+            if (value.CompareTo(currentNode.Value) == 0)
+            {
+                return i;
             }
+
+            currentNode = currentNode.Next[0];
         }
-        
+
         return -1;
     }
 
@@ -161,33 +174,35 @@ public class SkipList<T> : IList<T>
     /// <inheritdoc/>
     public bool Remove(T value)
     {
-        var successfulRemoving = false;
+        var valueIsRemoved = false;
         var currentNode = _head;
         
         for (int i = _currentMaxLevel - 1; i >= 0; --i)
         {
             while (currentNode.Next[i] is not null)
             {
-                if (value.CompareTo(currentNode.Value) < 0)
+                if (value.CompareTo(currentNode.Next[i].Value) < 0)
                 {
                     break;
                 }
                 else if (value.CompareTo(currentNode.Next[i].Value) == 0)
                 {
                     currentNode.Next[i] = currentNode.Next[i].Next[i];
-                    successfulRemoving = true;
+                    valueIsRemoved = true;
+                    break;
                 }
 
                 currentNode = currentNode.Next[i];
             }
         }
-        
-        if (successfulRemoving)
+
+        if (valueIsRemoved)
         {
             --Count;
+            ++_version;
         }
-        
-        return successfulRemoving;
+
+        return valueIsRemoved;
     }
 
     /// <inheritdoc/>
@@ -204,7 +219,9 @@ public class SkipList<T> : IList<T>
         {
             ++levelsAmount;
         }
-        
+
+        _currentMaxLevel = Math.Max(_currentMaxLevel, levelsAmount);
+
         return levelsAmount;
     }
 
@@ -215,39 +232,36 @@ public class SkipList<T> : IList<T>
 
     /// <inheritdoc/>
     public Enumerator GetEnumerator()
-    {
-        return new(this);
-    }
+        => new(this);
 
     IEnumerator<T> IEnumerable<T>.GetEnumerator()
-    {
-        return new Enumerator(this);
-    }
+        => new Enumerator(this);
 
     IEnumerator IEnumerable.GetEnumerator()
-    {
-        return new Enumerator(this);
-    }
+        => new Enumerator(this);
 
     /// <inheritdoc/>
-    public struct Enumerator : IEnumerator<T>
+    public struct Enumerator: IEnumerator<T>
     {
         private SkipList<T> _skipList;
 
-        private T? _currentValue;
-        
         private SkipListNode? _currentNode;
 
+        private T _currentValue;
+
+        private int _version;
+
         /// <inheritdoc/>
-        public T Current { get; }
+        public T Current => _currentValue;
 
         object IEnumerator.Current => Current;
 
         public Enumerator(SkipList<T> skipList)
         {
             _skipList = skipList;
-            _currentValue = default;
             _currentNode = skipList._head;
+            _currentValue = default;
+            _version = skipList._version;
         }
 
         /// <inheritdoc/>
@@ -258,13 +272,32 @@ public class SkipList<T> : IList<T>
         /// <inheritdoc/>
         public bool MoveNext()
         {
+            if (_skipList._version != _version)
+            {
+                throw new InvalidOperationException();
+            }
+
+            if (_currentNode.Next[0] is null)
+            {
+                return false;
+            }
+
+            _currentNode = _currentNode.Next[0];
+            _currentValue = _currentNode.Value;
+            
             return true;
         }
 
         /// <inheritdoc/>
         public void Reset()
         {
-            throw new NotImplementedException();
+            if (_skipList._version != _version)
+            {
+                throw new InvalidOperationException();
+            }
+
+            _currentNode = _skipList._head;
+            _currentValue = default;
         }
     }
 
