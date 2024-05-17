@@ -9,8 +9,8 @@ public class BubbleSorter
     /// Sorts list.
     /// </summary>
     /// <typeparam name="T">Type of values in list.</typeparam>
-    /// <param name="list"></param>
-    /// <param name="comparer"></param>
+    /// <param name="list">Specified list.</param>
+    /// <param name="comparer">Specified comparer.</param>
     public static void Sort<T>(IList<T> list, IComparer<T> comparer)
     {
         ArgumentNullException.ThrowIfNull(list);
