@@ -1,15 +1,18 @@
+// Copyright (c) bulat-tsydendorzhiev, LLC. All Rights Reserved.
+// Licensed under the MIT License. See LICENSE in the project root for license information.
+
 namespace EscapingButton
 {
     public partial class EscapingButtonForm : Form
     {
-        private readonly Random _random = new();
+        private readonly Random random = new ();
 
         public EscapingButtonForm()
         {
             InitializeComponent();
         }
 
-        private void EscapingButton_MouseHover(object sender, EventArgs e)
+        private void EscapingButton_MouseMove(object sender, EventArgs e)
         {
             ChangePosition();
         }
@@ -21,17 +24,8 @@ namespace EscapingButton
 
         private void ChangePosition()
         {
-            int newX = _random.Next() % FormWidth;
-            int newY = _random.Next() % FormHeight;
-
-            if (FormWidth - newX < ButtonWidth)
-            {
-                newX -= ButtonWidth;
-            }
-            if (FormHeight - newY < ButtonHeight)
-            {
-                newY -= ButtonHeight;
-            }
+            int newX = random.Next() % (Width - EscapingButton.Width);
+            int newY = random.Next() % (Height - EscapingButton.Height);
 
             EscapingButton.Location = new Point(newX, newY);
         }

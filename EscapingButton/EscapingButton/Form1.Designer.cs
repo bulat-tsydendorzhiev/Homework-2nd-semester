@@ -2,12 +2,6 @@
 {
     partial class EscapingButtonForm
     {
-        private const int FormWidth = 800;
-        private const int FormHeight = 500;
-
-        private const int ButtonWidth = 150;
-        private const int ButtonHeight = 75;
-
         /// <summary>
         ///  Required designer variable.
         /// </summary>
@@ -46,7 +40,8 @@
             EscapingButton.TabIndex = 0;
             EscapingButton.Text = "Click me!";
             EscapingButton.UseVisualStyleBackColor = true;
-            EscapingButton.MouseHover += EscapingButton_MouseHover;
+            EscapingButton.Click += EscapingButton_Click;
+            EscapingButton.MouseMove += EscapingButton_MouseMove;
             // 
             // EscapingButtonForm
             // 
@@ -54,6 +49,8 @@
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(784, 461);
             Controls.Add(EscapingButton);
+            MaximumSize = new Size(800, 500);
+            MinimumSize = new Size(800, 500);
             Name = "EscapingButtonForm";
             Text = "EscapingButtonForm";
             ResumeLayout(false);
